@@ -1,0 +1,166 @@
+\documentclass[12pt,titlepage, a4paper, oneside, openright, listof=totoc, headings=normal, chapterprefix=true]{scrbook}
+
+\addtokomafont{disposition}{\rmfamily}
+% FIGURES %
+
+\usepackage{palatino} % Type of font
+
+%\usepackage{fancyhdr} % Change caption style; changes headers and page styles etc.%
+\usepackage[doublespacing]{setspace} % For changing line spacing
+\usepackage[UKenglish]{babel}
+\usepackage{csquotes} % Quotes
+
+\usepackage{array}
+\usepackage{alphalph}
+\usepackage{booktabs,longtable,rotating,threeparttable,threeparttablex,multirow,pdflscape}
+\usepackage{microtype} % makes pdf look better
+
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{subfig}
+\usepackage{eqnarray}
+\usepackage{fancyref}
+\usepackage[capposition=top]{floatrow} 
+
+	
+\usepackage{placeins} 					% Allows the use of \FloatBarrier
+
+\usepackage[left=2.6cm,top=2.5cm,right=2.6cm,bottom=2.5cm, footnotesep=\baselineskip]{geometry}
+\usepackage{soul,color}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks = true,
+            linkcolor = BrickRed,
+            urlcolor  = blue,
+            citecolor = black,
+            anchorcolor = grey]{hyperref}
+
+
+
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{lscape} % Enables turning single pages into landscape mode
+\usepackage{adjustbox}
+\usepackage[toc, page]{appendix}
+
+\soulregister\citep7
+\soulregister\citet7
+\soulregister\ref7
+
+\usepackage[
+	style=authoryear,
+	natbib=true,
+	firstinits=true,
+       uniquename=false,
+       uniquelist=minyear,
+       maxcitenames=2, maxbibnames=99,
+	backend=biber]{biblatex}
+	\addbibresource{bibliography.bib}
+
+% BIBLIOGRAPHY %
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}  % remove 'in:' preceding article title
+\renewcommand*{\nameyeardelim}{\addspace} % no comma between author and year in-text citations
+\DeclareFieldFormat[article]{volume}{#1\addcolon\space}
+
+\DeclareFieldFormat{pages}{#1}% no prefix for the `pages` field in the bibliography
+\DeclareFieldFormat{journaltitle}{\mkbibemph{#1},} % italic journal title with comma
+
+% Place volume number within parentheses:
+\renewbibmacro*{volume+number+eid}{
+ \setunit{Vol.~}
+    \printfield{volume}
+   \printfield{number}
+    \setunit{\addcomma\space}
+    \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+% Ensure that issue number is not shown if coded in bibliography file
+\renewbibmacro*{volume+number+eid}{
+\printfield{volume}}
+
+% GENERAL SETTINGS %
+\renewcommand{\baselinestretch}{1.5}
+\setcounter{secnumdepth}{4} % organisational level that receives a numbers
+\setcounter{tocdepth}{3}    % print table of contents for X levels
+
+% Stop footnote counter to be restarted after every chapter.
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+% Increase space between tables/figures from different chapters in LoF/LoT
+\makeatletter
+\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+                       \if@mainmatter
+                         \refstepcounter{chapter}%
+                         \typeout{\@chapapp\space\thechapter.}%
+                         \addcontentsline{toc}{chapter}%
+                                   {\protect\numberline{\thechapter}#1}%
+                       \else
+                         \addcontentsline{toc}{chapter}{#1}%
+                       \fi
+                    \else
+                      \addcontentsline{toc}{chapter}{#1}%
+                    \fi
+                    \chaptermark{#1}%
+                    \addtocontents{lof}{\protect\addvspace{20\p@}}% NEW
+                    \addtocontents{lot}{\protect\addvspace{20\p@}}% NEW
+                    \if@twocolumn
+                      \@topnewpage[\@makechapterhead{#2}]%
+                    \else
+                      \@makechapterhead{#2}%
+                      \@afterheading
+                    \fi}
+\makeatother
+
+% Increase space between caption and number/page in LoT/LoF
+\makeatletter
+\def\l@figure{\@dottedtocline{1}{1.5em}{3em}}
+\def\l@table{\@dottedtocline{1}{1.5em}{3em}}
+\makeatother
+
+\date{}
+\title{}
+
+\begin{document}
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\include{title/title} % 1) Title	
+
+\addcontentsline{toc}{chapter}{Abstract}
+\onehalfspacing	
+\include{abstract/abstract}		% 2) Abstract
+
+\addcontentsline{toc}{chapter}{Table of Contents}
+\tableofcontents % 3) Table of contents				
+\listoftables 						% 4) List of tables, illustrations, etc
+\listoffigures
+\clearpage
+
+\addcontentsline{toc}{chapter}{Acknowledgements}%
+\include{acknowledgements/acknowledgements}	% 7) Acknowledgements
+
+\addcontentsline{toc}{chapter}{Declaration}%
+%\pagestyle{plain}	
+\include{declaration/declaration}	% 8) Author's declaration
+\clearpage
+
+\doublespacing
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\include{ch_1/ch_1}                 % CHAPTER 1 (Intro)
+\include{ch_2/ch_2}                 % CHAPTER 2
+% Add chapters here 
+\include{appendix/appendix} 
+\addcontentsline{toc}{chapter}{Abbreviations}        
+\include{abbreviations/abbreviations}
+\printbibliography[heading=bibintoc, title={References}]
+									
+\end{document}
+
+
+
+
